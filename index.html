@@ -55,10 +55,12 @@
             </a>
           </div>
           <span>or use your email and password</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <a href="">Forgot your email or password?</a>
-          <button>Sign in</button>
+          <form action="login.php" method="post">
+            <input type="email" placeholder="Email" name="email" required/>
+            <input type="password" placeholder="Password" name="password" required/>
+            <a href="">Forgot your email or password?</a>
+            <button type="submit">Sign in</button>
+          </form>
         </form>
       </div>
       <div class="toggle-container">
