@@ -1,7 +1,7 @@
 <?php
-    $serveur = "172.17.0.2";
+    $serveur = "localhost";
     $user = "root";
-    $mot_de_passe = "password1234";
+    $mot_de_passe = "";
     $nom_base_de_donnees = "mydb";
 
     $connexion = mysqli_connect($serveur, $user, $mot_de_passe, $nom_base_de_donnees);
@@ -15,7 +15,7 @@
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        $requete = "SELECT * FROM utilisateurs WHERE email = '$email' AND password = '$password'";
+        $requete = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
         $resultat = mysqli_query($connexion, $requete);
 
         if ($resultat && mysqli_num_rows($resultat) > 0) {
