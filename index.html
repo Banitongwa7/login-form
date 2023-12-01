@@ -5,82 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Login Form</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div class="container" id="container">
-      <div class="form-container sign-up">
-        <form>
-          <h1>Create Account</h1>
-          <div class="social-icons">
-            <a href="#" class="icon">
-              <i class="fa-brands fa-google-plus-g"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-linkedin-in"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-github"></i>
-            </a>
+    <div class="h-screen bg-[#111827] flex justify-center items-center">
+      <div class="py-6 px-8 h-80 bg-white rounded shadow-xl">
+        <form action="login.php" method="POST">
+          <div class="mb-6">
+            <label for="name" class="block text-gray-800 font-bold"
+              >Email :
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="email@example.com"
+              class="w-full border border-[#111827] py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600"
+            />
           </div>
-          <span>or use your email for registration</span>
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>Sign Up</button>
+
+          <div>
+            <label for="email" class="block text-gray-800 font-bold"
+              >Password :
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="password"
+              class="w-full border border-[#111827] py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600"
+            />
+
+            <a
+              href="#"
+              class="text-sm font-thin text-gray-800 hover:underline mt-2 inline-block hover:text-indigo-600"
+              >Forget Password</a
+            >
+          </div>
+          <button type="submit"
+            class="cursor-pointer py-2 px-4 block mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold w-full text-center rounded"
+          >
+            Login
+          </button>
         </form>
-      </div>
-      <div class="form-container sign-in">
-        <form>
-          <h1>Sign In</h1>
-          <div class="social-icons">
-            <a href="#" class="icon">
-              <i class="fa-brands fa-google-plus-g"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-linkedin-in"></i>
-            </a>
-            <a href="#" class="icon">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </div>
-          <span>or use your email and password</span>
-          <form action="login.php" method="post">
-            <input type="email" placeholder="Email" name="email" required/>
-            <input type="password" placeholder="Password" name="password" required/>
-            <a href="">Forgot your email or password?</a>
-            <button type="submit">Sign in</button>
-          </form>
-        </form>
-      </div>
-      <div class="toggle-container">
-        <div class="toggle">
-          <div class="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>Enter your personal details to use all of site features</p>
-            <button class="hidden" id="login">Sign In</button>
-          </div>
-          <div class="toggle-panel toggle-right">
-            <h1>Hello !</h1>
-            <p>
-              Register with your personal details to use all of site features
-            </p>
-            <button class="hidden" id="register">Sign Up</button>
-          </div>
-        </div>
       </div>
     </div>
-
-    <script src="./script.js"></script>
   </body>
 </html>
