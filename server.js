@@ -2,37 +2,32 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mysql = require("mysql");
 const path = require("path");
-
 dotenv.config({ path: "./.env" });
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.set("view engine", "hbs");
-
-const publicDir = path.join(__dirname, './public')
-
-app.use(express.static(publicDir))
-
-app.get("/", (req, res) => {
-    res.render("index")
-})
-
-app.get("/home", (req, res) => {
-    res.render("home")
-})
-
-
+// Connect to the MySQL database
 const db = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
+  port: process.env.DATABASE_PORT,
+});
+
+app.use(express.urlencoded({ extended: "false" }));
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/index.html"));
+});
+
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/home.html"));
 });
 
 app.post("/auth/login", (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  let dbConnect = true
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res
@@ -40,33 +35,21 @@ app.post("/auth/login", (req, res) => {
       .json({ success: false, message: "Missing username or password" });
   }
 
-  // Connect to the MySQL database
-  db.connect((error) => {
-    if (error) {
-      dbConnect = false
+  db.query(
+    "SELECT * FROM users WHERE email = ? AND password = ?",
+    [email, password],
+    (error, results) => {
+      if (error) {
+        console.log("Database query error");
+      }
+      if (results.length > 0) {
+        console.log("Login successful");
+      } else {
+        console.log("Invalid username or password");
+      }
     }
-  });
-
-  if(dbConnect){
-    db.query(
-        "SELECT * FROM users WHERE email = ? AND password = ?",
-        [email, password],
-        (error, results) => {
-          if (error) {
-            console.log(error);
-          }
-          if (results.length > 0) {
-            res.redirect("/home");
-          } else {
-            res.redirect("/");
-          }
-        }
-      );
-  }else{
-    console.log("Error connecting to the database");
-  }
+    );
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
