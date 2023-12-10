@@ -17,16 +17,16 @@ app.get("/", (req, res) => {
     res.render("index")
 })
 
-/*
+app.get("/home", (req, res) => {
+    res.render("home")
+})
+
+
 const db = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE,
-});
-
-app.get("/", (req, res) => {
-  res.render("/client/index.html");
 });
 
 app.post("/auth/login", (req, res) => {
@@ -56,9 +56,9 @@ app.post("/auth/login", (req, res) => {
             console.log(error);
           }
           if (results.length > 0) {
-            res.send({ success: true });
+            res.redirect("/home");
           } else {
-            res.send({ success: false });
+            res.redirect("/");
           }
         }
       );
@@ -66,7 +66,7 @@ app.post("/auth/login", (req, res) => {
     console.log("Error connecting to the database");
   }
 });
-*/
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
