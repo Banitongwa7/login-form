@@ -1,12 +1,23 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mysql = require("mysql");
+const path = require("path");
 
 dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT;
-
 const app = express();
 
+app.set("view engine", "hbs");
+
+const publicDir = path.join(__dirname, './public')
+
+app.use(express.static(publicDir))
+
+app.get("/", (req, res) => {
+    res.render("index")
+})
+
+/*
 const db = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
@@ -15,7 +26,7 @@ const db = mysql.createConnection({
 });
 
 app.get("/", (req, res) => {
-  res.render("./client/index.html");
+  res.render("/client/index.html");
 });
 
 app.post("/auth/login", (req, res) => {
@@ -55,6 +66,7 @@ app.post("/auth/login", (req, res) => {
     console.log("Error connecting to the database");
   }
 });
+*/
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
