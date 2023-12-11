@@ -51,9 +51,12 @@ app.post("/auth/login", (req, res) => {
         console.log("Database query error");
       }
       if (results.length > 0) {
-        console.log("Login successful");
+        res.redirect("/home");
       } else {
-        console.log("Invalid username or password");
+        res.status(401).json({
+          success: false,
+          message: "Invalid username or password",
+        });
       }
     }
     );
