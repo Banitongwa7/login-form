@@ -5,16 +5,22 @@ dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT || 3000;
 const app = express();
 const db = require("./database/db");
+const { engine } = require("express-handlebars");
+
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./client");
+app.use(express.static(path.join(__dirname, "/client")));
 
 app.use(express.urlencoded({ extended: "false" }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/index.html"));
+  res.render("index");
 });
 
 app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/home.html"));
+  res.render("home");
 });
 
 app.post("/auth/login", (req, res) => {
