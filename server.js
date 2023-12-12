@@ -1,27 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const mysql = require("mysql");
 const path = require("path");
 dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT || 3000;
 const app = express();
-
-// Connect to the MySQL database
-const db = mysql.createConnection({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  port: process.env.DATABASE_PORT,
-});
-
-db.connect((error) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("MySQL Connected...");
-  }
-});
+const db = require("./database/db");
 
 app.use(express.urlencoded({ extended: "false" }));
 app.use(express.json());
@@ -43,6 +26,14 @@ app.post("/auth/login", (req, res) => {
       .json({ success: false, message: "Missing username or password" });
   }
 
+  db.connect((error) => {
+    if (error) {
+      console.log("Database connection failed");
+    } else {
+      console.log("Database connected successfully");
+    }
+  });
+  
   db.query(
     "SELECT * FROM users WHERE email = ? AND password = ?",
     [email, password],
@@ -59,7 +50,10 @@ app.post("/auth/login", (req, res) => {
         });
       }
     }
-    );
+  );
+
+  db.end();
+
 });
 
 app.listen(PORT, () => {
