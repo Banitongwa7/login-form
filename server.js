@@ -29,11 +29,12 @@ app.get("/register", (req, res) => {
 
 app.post("/auth/login", (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
+  
+  // send error to index.hbs
+  if (email || password) {
     return res
       .status(400)
-      .json({ success: false, message: "Missing username or password" });
+      .json({ success: false, message: "Must provide email and password" });
   }
 
   db.connect((error) => {
@@ -74,7 +75,7 @@ app.post("/auth/register", (req, res) => {
   if (!email || !password) {
     return res
       .status(400)
-      .json({ success: false, message: "Missing username or password" });
+      .json({ success: false, message: "Must provide email and password" });
   }
 
   db.connect((error) => {
@@ -91,8 +92,9 @@ app.post("/auth/register", (req, res) => {
     (error, results) => {
       if (error) {
         console.log("Database query error");
+      }else{
+        res.redirect("/");
       }
-      res.redirect("/");
     }
   )
 })
