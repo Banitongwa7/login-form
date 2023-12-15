@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const db = require("./database/db");
 const { engine } = require("express-handlebars");
+const pcrypt = require("bcryptjs");
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -20,6 +21,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", (req, res) => {
+  res.render("home");
+});
+
+app.get("/register", (req, res) => {
   res.render("home");
 });
 
@@ -61,6 +66,37 @@ app.post("/auth/login", (req, res) => {
   db.end();
 
 });
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+
+  const hashedPassword = pcrypt.hashSync(password, pcrypt.genSaltSync(10));
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Missing username or password" });
+  }
+
+  db.connect((error) => {
+    if (error) {
+      console.log("Database connection failed");
+    } else {
+      console.log("Database connected successfully");
+    }
+  });
+
+  db.query(
+    "INSERT INTO users (email, password) VALUES (?, ?)",
+    [email, hashedPassword],
+    (error, results) => {
+      if (error) {
+        console.log("Database query error");
+      }
+      res.redirect("/");
+    }
+  )
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
